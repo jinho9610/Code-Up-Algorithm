@@ -1,0 +1,54 @@
+#include <iostream>
+
+using namespace std;
+
+int main(void)
+{
+	int n;
+	cin >> n;
+
+	int count[100000];
+	for (int i = 0; i < 100000; i++)
+	{
+		count[i] = 0;
+	}
+
+	int* array = new int[n];
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> array[i];
+	}
+	
+	for (int i = 0; i < n; i++)
+	{
+		count[array[i]]++;
+	}
+
+	/*int sum = 0;
+	int i = 0;
+
+	while (sum < n)
+	{
+		if (count[i] != 0)
+		{
+			sum += count[i];
+			for (int j = 0; j < count[i]; j++)
+				cout << i << " ";
+		}
+		i++;
+	}*/
+	// 위 아래는 서로 동일한 코드
+	for (int i = 0; i < 100000; i++)
+	{
+		if (count[i] != 0)
+		{
+			for (int j = 0; j < count[i]; j++)
+				cout << i << " ";
+		}
+	}
+
+	delete[] array;
+
+	return 0;
+}
