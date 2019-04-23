@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+typedef struct node
+{
+	char data;
+	node* leftChild;
+	node* rightChild;
+} node;
+
+void inOrder(node* ptr)
+{
+	if (ptr)
+	{
+		inOrder(ptr->leftChild);
+		cout << ptr->data;
+		inOrder(ptr->rightChild);
+	}
+}
+
+int main(void)
+{
+	string s;
+	cin >> s;
+	node* nodes = new node[s.size() + 1];
+	for (int i = 1; i <= s.size(); i++)
+	{
+		nodes[i].data = s[i-1];
+		nodes[i].leftChild = NULL;
+		nodes[i].rightChild = NULL;
+	}
+
+	for (int i = 1; i <= s.size(); i++)
+	{
+		if (i % 2 == 0)
+			nodes[i / 2].leftChild = &nodes[i];
+		else
+			nodes[i / 2].rightChild = &nodes[i];
+	}
+
+	inOrder(&nodes[1]);
+
+	delete[] nodes;
+
+	return 0;
+}
