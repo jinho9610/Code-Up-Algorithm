@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main(void)
+{
+	int x, y;
+	cin >> x; // 가로
+	cin >> y; // 세로
+
+
+	int** map = new int* [y];
+	for (int i = 0; i < y; i++)
+	{
+		map[i] = new int[x];
+	} // 지도 데이터 저장을 위한 2차원 배열 동적 할당
+	
+	for (int i = 0; i < y; i++)
+	{
+		char* X_Map = new char[x+1];
+		cin >> X_Map;
+		for (int j = 0; j < x; j++)
+		{
+			map[i][j] = X_Map[j] - '0';
+		}
+		delete[] X_Map;
+		X_Map = NULL;
+	} // 숫자 간의 공백이 없으므로 문자열을 이용하여 지도 정보 삽입
+	
+	// 가로로 y번, 세로로 x번 훑어서 1이 연속적으로 등장하는 '직선' 탐색
+
+	int hLine = 0;
+	for (int i = 0; i < y; i++)
+	{
+		int tempN = 0;
+		for (int j = 0; j < x - 1; j++) // 맨마지막 녀석은 탐색 필요없어서 x-1
+		{
+			if (map[i][j] == 1)
+			{
+				if (j > 0 && j < x - 2 && map[i][j - 1] == 1 && map[i][j + 1] == 0)
+					hLine += 1;
+				if (j == x - 2 && map[i][j - 1] == 1)
+					hLine += 1;
+				if (j > 0 && map[i][j - 1] == 0 && map[i][j + 1] == 0)
+					continue; // 010의 경우 제외
+				if (j == 0 && map[i][j + 1] == 0)
+					continue; // 100.. 의 경우 제외
+			}
+		}
+	}
+
+	int vLine = 0;
+	for (int i = 0; i < y-1; i++) // 맨마지막 녀석은 탐색 필요없어서 x-1
+	{
+		for (int j = 0; j < x; j++) 
+		{
+			if (map[i][j] == 1)
+			{
+				if (i>0&&i < y - 2 && map[i - 1][j] == 1 && map[i + 1][j] == 0)
+					vLine += 1;
+				if (i == y - 2 && map[i - 1][j] == 1)
+					vLine += 1;
+				if (i > 0 && map[i - 1][j] == 0 && map[i + 1][j] == 0)
+					continue; // 010의 경우 제외
+				if (i == 0 && map[i][j + 1] == 0)
+					continue; // 100.. 의 경우 제외
+			}
+		}
+	}
+
+	cout << hLine + vLine << endl;
+	
+	for (int i = 0; i < y; i++)
+	{
+		delete[] map[i];
+		map[i] = NULL;
+	}
+	delete[] map;
+	map = NULL; // 지도 배열 동적할당 해제
+
+	return 0;
+}
